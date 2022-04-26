@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jun 11 22:34:20 2020
-
 @author: Krish Naik
 """
 
@@ -27,7 +26,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__,template_folder='template')
 
 # Model saved with Keras model.save()
-MODEL_PATH ='car.h5'
+MODEL_PATH ='sonali.h5'                      ## Model Name 
 
 # Load your trained model
 model = load_model(MODEL_PATH)
@@ -42,17 +41,18 @@ def model_predict(img_path, model):
     ## Scaling
     x=x/255
     x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x)
    
+
+    # Be careful how your trained model deals with the input
+    # otherwise, it won't make correct prediction!
+    x = preprocess_input(x)
 
     preds = model.predict(x)
     preds=np.argmax(preds, axis=1)
     if preds==0:
-        preds="The Car IS Audi"
-    elif preds==1:
-        preds="The Car is Lamborghini"
+        preds="The Person is Infected With Pneumonia"
     else:
-        preds="The Car Is Mercedes"
+        preds="The Person is not Infected With Pneumonia"
     
     
     return preds
@@ -61,7 +61,7 @@ def model_predict(img_path, model):
 @app.route('/', methods=['GET'])
 def index():
     # Main page
-    return render_template('index99.html')
+    return render_template('index99.html')             ## Index HTML NAME 
 
 
 @app.route('/predict', methods=['GET', 'POST'])
